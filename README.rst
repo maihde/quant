@@ -83,6 +83,15 @@ An example script is provided in scripts/example.txt.  It is suggested that you
 read it and then execute it::
     $ ./quant < scripts/example.txt
 
+----
+Misc
+----
+
 If you are developing new strategies, you may want to install HDFView, as it will
 give you an easy way to explore the raw data in the output h5 files.  HDFView can
 be downloaded from http://www.hdfgroup.org/hdf-java-html/hdfview/
+
+You may also like to read these resources to learn more about Quantitive trading:
+
+- http://www.smartquant.com/introduction/openquant_strategy.pdf
+- Quantitative Trading: How to Build Your Own Algorithmic Trading Business by Ernest P. Chan

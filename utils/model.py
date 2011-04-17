@@ -103,6 +103,9 @@ class Position(object):
     def remove(self, qty, price_sold):
         self.amount -= qty
 
+    def __str__(self):
+        return str(self.amount)
+
 ###############################################################################
 # PyTables data structures
 ###############################################################################

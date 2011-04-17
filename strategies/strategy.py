@@ -58,12 +58,14 @@ class Strategy(object):
     def updateIndicators(self, start_date, end_date=None):
         for symbol, indicators in self.indicators.items():
             ticker = self.market[symbol]
-            
-            if end_date == None:
-                end_date = start_date + ONE_DAY
+            if end_date != None:
+                quotes = ticker[start_date:end_date] # Call this to cache everything
+                end = end_date
+            else:
+                end = start_date + ONE_DAY
 
             d = start_date
-            while d < end_date:
+            while d < end:
                 quote = ticker[d]
                 if quote.adjclose != None:
                     for indicator in indicators.values():

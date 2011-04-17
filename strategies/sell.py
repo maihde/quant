@@ -24,9 +24,9 @@ class SellOff(Strategy):
     """A simple strategy, useful for testing, that sells everything immediately."""
     def evaluate(self, date, position, market):
         orders = [] 
-        for symbol, qty in position.items():
-            if symbol != '$' and qty > 0:
-                orders.append(Order(Order.SELL, symbol, qty, Order.MARKET_PRICE))
+        for symbol, p in position.items():
+            if symbol != '$' and p.amount > 0:
+                orders.append(Order(Order.SELL, symbol, p.amount, Order.MARKET_PRICE))
         return orders
 
 CLAZZ = SellOff

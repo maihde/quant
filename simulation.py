@@ -78,7 +78,6 @@ def initialize_position(portfolio, date):
                 if type(amt) == str and amt.startswith('$'):
                     amt = float(amt[1:])
                     amt = math.floor(amt / price)
-                print "Initial position", instrument, amt, price, amt*price
                 position[instrument] = Position(float(amt), price)
     return position
 

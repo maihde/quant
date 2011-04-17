@@ -23,13 +23,14 @@ from utils.date import ONE_DAY
 import yahoo
 import datetime
 import math
+import yaml
 
 @command("portfolio_create")
 def create(name, cash_percent=0.0, initial_position="{}"):
     if not CONFIG["portfolios"].has_key(name):
         CONFIG["portfolios"][name] = {}
         CONFIG["portfolios"][name]['$'] = cash_percent
-        initial_position = eval(initial_position)
+        initial_position = yaml.load(initial_position)
         for sym, amt in initial_position.items():
             CONFIG["portfolios"][name][sym] = amt
         CONFIG.commit()

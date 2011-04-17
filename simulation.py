@@ -24,6 +24,7 @@ import os
 import sys
 import tables
 import math
+import yaml
 from config import CONFIG
 from yahoo import Market
 from utils.progress_bar import ProgressBar
@@ -201,9 +202,9 @@ def analyze(strategy_name, portfolio, strategy_params="{}"):
     position = initialize_position(portfolio, now)
 
     # Initialize the strategy
-    strategy_params = eval(strategy_params)
+    params = yaml.load(strategy_params)
     strategy_clazz = load_strategy(strategy_name)
-    strategy = strategy_clazz(now, now, position, MARKET, strategy_params)
+    strategy = strategy_clazz(now, now, position, MARKET, params)
     
     orders = strategy.evaluate(now, position, MARKET)
 
@@ -252,9 +253,9 @@ def simulate(strategy_name, portfolio, start_date, end_date, output="~/.quant/si
         days = (end_date - start_date).days
         
         # Initialize the strategy
-        strategy_params = eval(strategy_params)
+        params = yaml.load(strategy_params)
         strategy_clazz = load_strategy(strategy_name)
-        strategy = strategy_clazz(start_date, end_date, position, MARKET, strategy_params, outputFile)
+        strategy = strategy_clazz(start_date, end_date, position, MARKET, params, outputFile)
 
         p = ProgressBar(maxValue=days, totalWidth=80)
         print "Starting Simulation"

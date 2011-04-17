@@ -56,7 +56,7 @@ def initialize_position(portfolio, date):
             position[instrument] = float(amt)
         else:
             d = date
-            price = market[instrument][d].close
+            price = market[instrument][d].adjclose
             while price == None:
                 # Walk backwards looking for a day that had a close price, but not too far
                 # because the given instrument may not exist at any time for the given
@@ -64,17 +64,18 @@ def initialize_position(portfolio, date):
                 d = d - ONE_DAY
                 if (date - d) > datetime.timedelta(days=7):
                     break
-                price = market[instrument][d].close
+                price = market[instrument][d].adjclose
             if price == None:
                 # This occurs it the instrument does not exist in the market
                 # at the start of the simulation period
+                print "Warning price information for %s not available at start of simulation period" % instrument
                 position[instrument] = Position(0.0, 0.0)
             else:
                 if type(amt) == str and amt.startswith('$'):
                     amt = float(amt[1:])
                     amt = math.floor(amt / price)
+                print "Initial position", instrument, amt, price, amt*price
                 position[instrument] = Position(float(amt), price)
-
     return position
 
 def write_position(table, position, date):

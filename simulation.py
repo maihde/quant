@@ -45,7 +45,7 @@ def initialize_position(portfolio, date):
         date = datetime.datetime.strptime(date, "%Y-%m-%d")
 
     # Turn the initial cash value into shares based off the portfolio percentage
-    position = {}
+    position = {'$': 0.0}
     market = Market()
     for instrument, amt in p.items():
         instrument = instrument.strip()
@@ -53,7 +53,7 @@ def initialize_position(portfolio, date):
             amt = amt.strip()
 
         if instrument == "$":
-            position[instrument] = float(amt)
+            position[instrument] += float(amt)
         else:
             d = date
             price = market[instrument][d].adjclose
@@ -68,8 +68,12 @@ def initialize_position(portfolio, date):
             if price == None:
                 # This occurs it the instrument does not exist in the market
                 # at the start of the simulation period
-                print "Warning price information for %s not available at start of simulation period" % instrument
                 position[instrument] = Position(0.0, 0.0)
+                if type(amt) == str and amt.startswith('$'):
+                    amt = float(amt[1:])
+                    position['$'] += amt
+                else:
+                    print "Warning.  Non-cash value used for instrument that is not available at start of simulation period"
             else:
                 if type(amt) == str and amt.startswith('$'):
                     amt = float(amt[1:])

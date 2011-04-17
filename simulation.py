@@ -190,6 +190,21 @@ def load_strategy(name):
     return clazz
 
 
+@command("analyze")
+def analyze(strategy_name, portfolio, strategy_params="{}"):
+    """Using a given strategy and portfolio, make a trading decision"""
+    now = datetime.datetime.today()
+    position = initialize_position(portfolio, now)
+
+    # Initialize the strategy
+    strategy_params = eval(strategy_params)
+    strategy_clazz = load_strategy(strategy_name)
+    strategy = strategy_clazz(now, now, position, MARKET, strategy_params)
+    
+    orders = strategy.evaluate(now, position, MARKET)
+
+    for order in orders:
+        print order
 
 @command("simulate")
 def simulate(strategy_name, portfolio, start_date, end_date, output="~/.quant/simulation.h5", strategy_params="{}"):

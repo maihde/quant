@@ -66,7 +66,12 @@ class Trending(Strategy):
             self.addIndicator(symbol, "rsi", RSI(rsi)) 
 
         # Backfill the indicators 
-        d = start_date - (30 * ONE_DAY)
+        try:
+            backfill = params['backfill']
+        except KeyError:
+            backfill = long_
+
+        d = start_date - (backfill * ONE_DAY)
         self.updateIndicators(d, start_date)
     
     def evaluate(self, date, position, market):

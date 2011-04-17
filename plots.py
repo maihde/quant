@@ -62,28 +62,34 @@ def plot(input_="~/.quant/simulation.h5", node="/Performance", x="date", y="valu
     fig.show()
 
 @command("plot_indicators")
-def plot_indicators(symbol, indicator="all", input_="~/.quant/simulation.h5", x="date", y="value"):
-    fig = plt.figure()
+def plot_indicators(symbol="", indicator="all", input_="~/.quant/simulation.h5", x="date", y="value"):
 
+    inputFile = tables.openFile(os.path.expanduser(input_), "r")
     try:
-        inputFile = tables.openFile(os.path.expanduser(input_), "r")
-        lines = []
-        legend = []
-        sp = fig.add_subplot(111)
-        sp.set_title(input_)
-        for tbl in inputFile.iterNodes("/Indicators/" + symbol, classname="Table"):
-            if indicator == "all" or tbl._v_name == indicator:
-                x_data = tbl.col(x)
-                y_data = tbl.col(y)
-                line = sp.plot(x_data, y_data, '-')
-                lines.append(line)
-                legend.append(tbl._v_name)
-                x_locator = dates.AutoDateLocator()
-                sp.xaxis.set_major_locator(x_locator)
-                sp.xaxis.set_major_formatter(dates.AutoDateFormatter(x_locator))
+        symbols = []
+        if symbol == "":
+            symbols = [grp._v_name for grp in inputFile.iterNodes("/Indicators", classname="Group")]
+        else:
+            symbols = (symbol,)
+
+        for sym in symbols:
+            fig = plt.figure()
+            lines = []
+            legend = []
+            sp = fig.add_subplot(111)
+            sp.set_title(input_ + " " + sym)
+            for tbl in inputFile.iterNodes("/Indicators/" + sym, classname="Table"):
+                if indicator == "all" or tbl._v_name == indicator:
+                    x_data = tbl.col(x)
+                    y_data = tbl.col(y)
+                    line = sp.plot(x_data, y_data, '-')
+                    lines.append(line)
+                    legend.append(tbl._v_name)
+                    x_locator = dates.AutoDateLocator()
+                    sp.xaxis.set_major_locator(x_locator)
+                    sp.xaxis.set_major_formatter(dates.AutoDateFormatter(x_locator))
+            legend = fig.legend(lines, legend, loc='upper right')
+            fig.autofmt_xdate()
+            fig.show()
     finally:
         inputFile.close()
-
-    legend = fig.legend(lines, legend, loc='upper right')
-    fig.autofmt_xdate()
-    fig.show()

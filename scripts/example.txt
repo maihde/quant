@@ -2,8 +2,8 @@
 !
 ! You don't need to delete/create portfolios everytime, as they are stored in ~/quant/quant.cfg
 ! You can also directly edit quant.cfg instead of using the portfolio commands. 
-portfolio_delete spy 0.0 '{"spy": 100}'
-portfolio_create spy 0.0 '{"spy": 100}'
+portfolio_delete spy
+portfolio_create spy 0.0 '{"spy": "$10000"}'
 simulate hold spy 2005-01-01 2010-01-01 ~/.quant/benchmark.h5
 simulate trending spy 2005-01-01 2010-01-01 ~/.quant/trending.h5 '{"long": 50,"short": 10}'
 report_performance ~/.quant/benchmark.h5

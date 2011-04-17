@@ -30,10 +30,8 @@ import matplotlib.dates as dates
 @command("show")
 def show():
     """Shows all plots that have been created, only necessary if you are
-    creating plots in a script.  Typically the last two lines of a script
-    will be:
-        show
-        wait
+    creating plots in a script.  Typically the last line of a script that
+    creates plots will be 'show'.
     """
     plt.show()
 

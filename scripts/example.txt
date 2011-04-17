@@ -11,4 +11,3 @@ report_performance ~/.quant/trending.h5
 plot_indicators spy all ~/.quant/trending.h5
 plot ~/.quant/trending.h5
 show
-wait

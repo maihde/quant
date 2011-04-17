@@ -79,7 +79,7 @@ def warranty():
 
 @command("wait")
 def wait():
-    """Block's until CTRL-C is pressed, useful at the end of scripts that create plots"""
+    """Block's until CTRL-C is pressed, only useful at the end of scripts"""
     print "Press CTRL-C to exit"
     while True:
         time.sleep(1)

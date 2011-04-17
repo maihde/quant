@@ -38,9 +38,9 @@ class SymbolData(tables.IsDescription):
     ema_long = tables.Float32Col()
 
 class Trending(Strategy):
-    LONG_DAYS = 200
-    SHORT_DAYS = 15
-    RSI_PERIOD = 14
+    DEF_LONG_DAYS = 200
+    DEF_SHORT_DAYS = 15
+    DEF_RSI_PERIOD = 14
 
     def __init__(self, start_date, end_date, initial_position, market, params, h5file=None):
         Strategy.__init__(self, start_date, end_date, initial_position, market, params, h5file)
@@ -49,9 +49,21 @@ class Trending(Strategy):
                 continue
 
             self.addIndicator(symbol, "value", SimpleValue()) 
-            self.addIndicator(symbol, "short", EMA(Trending.SHORT_DAYS)) 
-            self.addIndicator(symbol, "long", EMA(Trending.LONG_DAYS)) 
-            self.addIndicator(symbol, "rsi", RSI(Trending.RSI_PERIOD)) 
+            try:
+                short = params['short']
+            except KeyError:
+                short = Trending.DEF_SHORT_DAYS
+            self.addIndicator(symbol, "short", EMA(short)) 
+            try:
+                long_ = params['long']
+            except KeyError:
+                long_ = Trending.DEF_LONG_DAYS
+            self.addIndicator(symbol, "long", EMA(long_)) 
+            try:
+                rsi = params['rsi']
+            except KeyError:
+                rsi = Trending.DEF_RSI_PERIOD
+            self.addIndicator(symbol, "rsi", RSI(rsi)) 
 
         # Backfill the indicators 
         d = start_date - (30 * ONE_DAY)
